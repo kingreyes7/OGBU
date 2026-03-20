@@ -1,0 +1,858 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SGRU - Portal del Postulante</title>
+    <style>
+        :root {
+            --primary-color: #1a4b8c;
+            --secondary-color: #2e7d32;
+            --accent-color: #ff9800;
+            --light-color: #f5f5f5;
+            --dark-color: #333;
+            --danger-color: #d32f2f;
+            --success-color: #388e3c;
+            --border-radius: 8px;
+            --box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f9f9f9;
+            color: var(--dark-color);
+            line-height: 1.6;
+        }
+        
+        header {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 1rem 0;
+            box-shadow: var(--box-shadow);
+        }
+        
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+        
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+        }
+        
+        .logo img {
+            height: 50px;
+            margin-right: 15px;
+        }
+        
+        .logo h1 {
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+        
+        .user-menu {
+            display: flex;
+            align-items: center;
+        }
+        
+        .user-menu span {
+            margin-right: 15px;
+        }
+        
+        .btn {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: var(--secondary-color);
+            color: white;
+            border: none;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+        
+        .btn:hover {
+            background-color: #1b5e20;
+            transform: translateY(-2px);
+        }
+        
+        .btn-outline {
+            background-color: transparent;
+            border: 1px solid var(--primary-color);
+            color: var(--primary-color);
+        }
+        
+        .btn-outline:hover {
+            background-color: var(--primary-color);
+            color: white;
+        }
+        
+        .btn-danger {
+            background-color: var(--danger-color);
+        }
+        
+        .btn-danger:hover {
+            background-color: #b71c1c;
+        }
+        
+        .hero {
+            background: linear-gradient(rgba(26, 75, 140, 0.8), rgba(26, 75, 140, 0.9)), url('resi.jpg');
+            background-size: cover;
+            background-position: center;
+            color: white;
+            padding: 4rem 0;
+            text-align: center;
+        }
+        
+        .hero h2 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .hero p {
+            font-size: 1.2rem;
+            max-width: 800px;
+            margin: 0 auto 2rem;
+        }
+        
+        .dashboard {
+            padding: 3rem 0;
+        }
+        
+        .card {
+            background-color: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            transition: transform 0.3s ease;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .card-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--primary-color);
+        }
+        
+        .card-status {
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+        
+        .status-pending {
+            background-color: #fff3e0;
+            color: #ef6c00;
+        }
+        
+        .status-approved {
+            background-color: #e8f5e9;
+            color: var(--success-color);
+        }
+        
+        .status-rejected {
+            background-color: #ffebee;
+            color: var(--danger-color);
+        }
+        
+        .status-complete {
+            background-color: #e3f2fd;
+            color: var(--primary-color);
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+        
+        .form-control {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: var(--border-radius);
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+        }
+        
+        .form-control:focus {
+            border-color: var(--primary-color);
+            outline: none;
+        }
+        
+        .file-upload {
+            border: 2px dashed #ddd;
+            border-radius: var(--border-radius);
+            padding: 2rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .file-upload:hover {
+            border-color: var(--primary-color);
+            background-color: #f0f7ff;
+        }
+        
+        .file-upload i {
+            font-size: 3rem;
+            color: #aaa;
+            margin-bottom: 1rem;
+        }
+        
+        .file-list {
+            margin-top: 1rem;
+        }
+        
+        .file-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px;
+            background-color: #f5f5f5;
+            border-radius: var(--border-radius);
+            margin-bottom: 10px;
+        }
+        
+        .file-name {
+            display: flex;
+            align-items: center;
+        }
+        
+        .file-name i {
+            margin-right: 10px;
+            color: var(--primary-color);
+        }
+        
+        .file-actions button {
+            background: none;
+            border: none;
+            color: var(--danger-color);
+            cursor: pointer;
+        }
+        
+        .steps {
+            display: flex;
+            justify-content: space-between;
+            margin: 2rem 0;
+            position: relative;
+        }
+        
+        .steps::before {
+            content: '';
+            position: absolute;
+            top: 20px;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background-color: #ddd;
+            z-index: 1;
+        }
+        
+        .step {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .step-number {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: #ddd;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 10px;
+            font-weight: bold;
+            color: white;
+        }
+        
+        .step.active .step-number {
+            background-color: var(--primary-color);
+        }
+        
+        .step.completed .step-number {
+            background-color: var(--success-color);
+        }
+        
+        .step-label {
+            font-size: 0.9rem;
+            text-align: center;
+        }
+        
+        .notification {
+            padding: 15px;
+            border-radius: var(--border-radius);
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+        }
+        
+        .notification.info {
+            background-color: #e3f2fd;
+            color: var(--primary-color);
+        }
+        
+        .notification.success {
+            background-color: #e8f5e9;
+            color: var(--success-color);
+        }
+        
+        .notification.warning {
+            background-color: #fff3e0;
+            color: #ef6c00;
+        }
+        
+        .notification i {
+            margin-right: 10px;
+            font-size: 1.2rem;
+        }
+        
+        .tabs {
+            display: flex;
+            border-bottom: 1px solid #ddd;
+            margin-bottom: 1.5rem;
+        }
+        
+        .tab {
+            padding: 10px 20px;
+            cursor: pointer;
+            border-bottom: 3px solid transparent;
+            transition: all 0.3s ease;
+        }
+        
+        .tab.active {
+            border-bottom-color: var(--primary-color);
+            color: var(--primary-color);
+            font-weight: 500;
+        }
+        
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        .table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        .table th, .table td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        .table th {
+            background-color: #f5f5f5;
+            font-weight: 600;
+        }
+        
+        .table tr:hover {
+            background-color: #f9f9f9;
+        }
+        
+        footer {
+            background-color: var(--dark-color);
+            color: white;
+            padding: 2rem 0;
+            margin-top: 3rem;
+        }
+        
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+        }
+        
+        .footer-section {
+            flex: 1;
+            min-width: 250px;
+            margin-bottom: 1.5rem;
+        }
+        
+        .footer-section h3 {
+            margin-bottom: 1rem;
+            font-size: 1.2rem;
+        }
+        
+        .footer-section ul {
+            list-style: none;
+        }
+        
+        .footer-section ul li {
+            margin-bottom: 0.5rem;
+        }
+        
+        .footer-section a {
+            color: #ddd;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        
+        .footer-section a:hover {
+            color: white;
+        }
+        
+        .copyright {
+            text-align: center;
+            padding-top: 1.5rem;
+            border-top: 1px solid #444;
+            margin-top: 1.5rem;
+        }
+        
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .logo {
+                margin-bottom: 1rem;
+            }
+            
+            .steps {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .steps::before {
+                display: none;
+            }
+            
+            .step {
+                flex-direction: row;
+                margin-bottom: 1rem;
+            }
+            
+            .step-number {
+                margin-right: 15px;
+                margin-bottom: 0;
+            }
+        }
+    </style>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <img src="unmsm.png" alt="Logo UNMSM">
+                    <h1>Sistema de Gestión de Residencia Universitaria</h1>
+                </div>
+                <div class="user-menu">
+                    <span>Bienvenido, <strong>Manuel Ocaña</strong></span>
+                    <a href="#" class="btn btn-outline">Cerrar Sesión</a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <section class="hero">
+        <div class="container">
+            <h2>Beca de Vivienda Universitaria</h2>
+            <p>Postula a la residencia universitaria y disfruta de un alojamiento digno durante tus estudios en la UNMSM</p>
+            <a href="#postulacion" class="btn">Iniciar Postulación</a>
+        </div>
+    </section>
+
+    <section class="dashboard container" id="postulacion">
+        <div class="notification info">
+            <i class="fas fa-info-circle"></i>
+            <div>
+                <strong>Convocatoria 2025-2 Abierta</strong>
+                <p>El período de postulación estará disponible hasta el 30 de noviembre de 2025.</p>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header">
+                <h2 class="card-title">Estado de tu Postulación</h2>
+                <span class="card-status status-pending">En Proceso</span>
+            </div>
+            
+            <div class="steps">
+                <div class="step completed">
+                    <div class="step-number">1</div>
+                    <div class="step-label">Registro de Datos</div>
+                </div>
+                <div class="step completed">
+                    <div class="step-number">2</div>
+                    <div class="step-label">Documentación</div>
+                </div>
+                <div class="step active">
+                    <div class="step-number">3</div>
+                    <div class="step-label">Entrevista</div>
+                </div>
+                <div class="step">
+                    <div class="step-number">4</div>
+                    <div class="step-label">Resultados</div>
+                </div>
+            </div>
+            
+            <div class="tabs">
+                <div class="tab active" data-tab="datos">Datos Personales</div>
+                <div class="tab" data-tab="documentos">Documentación</div>
+                <div class="tab" data-tab="entrevista">Entrevista</div>
+                <div class="tab" data-tab="seguimiento">Seguimiento</div>
+            </div>
+            
+            <div class="tab-content active" id="datos">
+                <form id="form-datos">
+                    <div class="form-group">
+                        <label class="form-label" for="nombres">Nombres Completos</label>
+                        <input type="text" class="form-control" id="nombres" value="Juan Carlos" readonly>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label" for="apellidos">Apellidos Completos</label>
+                        <input type="text" class="form-control" id="apellidos" value="Pérez García" readonly>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label" for="dni">DNI</label>
+                        <input type="text" class="form-control" id="dni" value="76543210" readonly>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label" for="carrera">Carrera</label>
+                        <input type="text" class="form-control" id="carrera" value="Ingeniería de Sistemas" readonly>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label" for="ciclo">Ciclo de Estudios</label>
+                        <input type="text" class="form-control" id="ciclo" value="VI" readonly>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label" for="promedio">Promedio Ponderado</label>
+                        <input type="text" class="form-control" id="promedio" value="15.8" readonly>
+                    </div>
+                </form>
+            </div>
+            
+            <div class="tab-content" id="documentos">
+                <div class="notification warning">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    <div>
+                        <strong>Documentación Requerida</strong>
+                        <p>Asegúrate de subir todos los documentos en formato PDF con un tamaño máximo de 5MB cada uno.</p>
+                    </div>
+                </div>
+                
+                <div class="file-upload" id="drop-area">
+                    <i class="fas fa-cloud-upload-alt"></i>
+                    <p>Arrastra tus archivos aquí o haz clic para seleccionarlos</p>
+                    <input type="file" id="file-input" multiple accept=".pdf" style="display: none;">
+                </div>
+                
+                <div class="file-list">
+                    <div class="file-item">
+                        <div class="file-name">
+                            <i class="fas fa-file-pdf"></i>
+                            <span>Reporte_de_Matricula.pdf</span>
+                        </div>
+                        <div class="file-actions">
+                            <button><i class="fas fa-trash"></i></button>
+                        </div>
+                    </div>
+                    
+                    <div class="file-item">
+                        <div class="file-name">
+                            <i class="fas fa-file-pdf"></i>
+                            <span>Constancia_de_Merito.pdf</span>
+                        </div>
+                        <div class="file-actions">
+                            <button><i class="fas fa-trash"></i></button>
+                        </div>
+                    </div>
+                    
+                    <div class="file-item">
+                        <div class="file-name">
+                            <i class="fas fa-file-pdf"></i>
+                            <span>DNI.pdf</span>
+                        </div>
+                        <div class="file-actions">
+                            <button><i class="fas fa-trash"></i></button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div style="text-align: right; margin-top: 1.5rem;">
+                    <button class="btn">Guardar Documentación</button>
+                </div>
+            </div>
+            
+            <div class="tab-content" id="entrevista">
+                <div class="notification info">
+                    <i class="fas fa-calendar-alt"></i>
+                    <div>
+                        <strong>Entrevista Programada</strong>
+                        <p>Tu entrevista socioeconómica está programada para el <strong>15 de noviembre de 2025 a las 10:00 AM</strong> en la Oficina de Bienestar Universitario.</p>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label" for="fecha-entrevista">Fecha y Hora de Entrevista</label>
+                    <input type="datetime-local" class="form-control" id="fecha-entrevista" value="2025-11-15T10:00">
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label" for="lugar-entrevista">Lugar de Entrevista</label>
+                    <input type="text" class="form-control" id="lugar-entrevista" value="Oficina de Bienestar Universitario - Ciudad Universitaria">
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label" for="observaciones">Observaciones</label>
+                    <textarea class="form-control" id="observaciones" rows="4">Por favor, llegar 15 minutos antes con su DNI original.</textarea>
+                </div>
+                
+                <div style="text-align: right;">
+                    <button class="btn">Confirmar Asistencia</button>
+                </div>
+            </div>
+            
+            <div class="tab-content" id="seguimiento">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Fecha</th>
+                            <th>Estado</th>
+                            <th>Observaciones</th>
+                            <th>Responsable</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>05/11/2025</td>
+                            <td><span class="card-status status-complete">Completado</span></td>
+                            <td>Postulación registrada exitosamente</td>
+                            <td>Sistema</td>
+                        </tr>
+                        <tr>
+                            <td>07/11/2025</td>
+                            <td><span class="card-status status-complete">Completado</span></td>
+                            <td>Documentación recibida y validada</td>
+                            <td>Personal OGBU</td>
+                        </tr>
+                        <tr>
+                            <td>10/11/2025</td>
+                            <td><span class="card-status status-pending">Pendiente</span></td>
+                            <td>Entrevista programada</td>
+                            <td>Trabajadora Social</td>
+                        </tr>
+                        <tr>
+                            <td>--/--/----</td>
+                            <td><span class="card-status">Por iniciar</span></td>
+                            <td>Evaluación de expediente</td>
+                            <td>Comisión de Vivienda</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        
+        <div class="card">
+            <div class="card-header">
+                <h2 class="card-title">Convocatorias Disponibles</h2>
+            </div>
+            
+            <div class="notification success">
+                <i class="fas fa-check-circle"></i>
+                <div>
+                    <strong>Convocatoria 2025-2 Activa</strong>
+                    <p>Postulación abierta hasta el 30 de noviembre de 2025. Resultados: 15 de diciembre de 2025.</p>
+                </div>
+            </div>
+            
+            <div style="text-align: center; margin-top: 1.5rem;">
+                <button class="btn">Ver Bases de la Convocatoria</button>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>Contacto</h3>
+                    <ul>
+                        <li><i class="fas fa-map-marker-alt"></i> Ciudad Universitaria, Lima - Perú</li>
+                        <li><i class="fas fa-phone"></i> (01) 619-7000</li>
+                        <li><i class="fas fa-envelope"></i> ogbu@unmsm.edu.pe</li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>Enlaces Rápidos</h3>
+                    <ul>
+                        <li><a href="#">Página Principal UNMSM</a></li>
+                        <li><a href="#">Oficina de Bienestar Universitario</a></li>
+                        <li><a href="#">Reglamento de Residencias</a></li>
+                        <li><a href="#">Preguntas Frecuentes</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>Recursos</h3>
+                    <ul>
+                        <li><a href="#">Formatos de Postulación</a></li>
+                        <li><a href="#">Guía de Usuario</a></li>
+                        <li><a href="#">Documentación Requerida</a></li>
+                        <li><a href="#">Cronograma de Convocatorias</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="copyright">
+                <p>&copy; 2025 Universidad Nacional Mayor de San Marcos - Oficina General de Bienestar Universitario. Todos los derechos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Funcionalidad de pestañas
+        document.querySelectorAll('.tab').forEach(tab => {
+            tab.addEventListener('click', () => {
+                // Remover clase activa de todas las pestañas
+                document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+                document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+                
+                // Agregar clase activa a la pestaña clickeada
+                tab.classList.add('active');
+                
+                // Mostrar el contenido correspondiente
+                const tabId = tab.getAttribute('data-tab');
+                document.getElementById(tabId).classList.add('active');
+            });
+        });
+        
+        // Funcionalidad de carga de archivos
+        const dropArea = document.getElementById('drop-area');
+        const fileInput = document.getElementById('file-input');
+        
+        dropArea.addEventListener('click', () => {
+            fileInput.click();
+        });
+        
+        dropArea.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            dropArea.style.borderColor = 'var(--primary-color)';
+            dropArea.style.backgroundColor = '#f0f7ff';
+        });
+        
+        dropArea.addEventListener('dragleave', () => {
+            dropArea.style.borderColor = '#ddd';
+            dropArea.style.backgroundColor = 'transparent';
+        });
+        
+        dropArea.addEventListener('drop', (e) => {
+            e.preventDefault();
+            dropArea.style.borderColor = '#ddd';
+            dropArea.style.backgroundColor = 'transparent';
+            
+            const files = e.dataTransfer.files;
+            handleFiles(files);
+        });
+        
+        fileInput.addEventListener('change', () => {
+            const files = fileInput.files;
+            handleFiles(files);
+        });
+        
+        function handleFiles(files) {
+            for (let i = 0; i < files.length; i++) {
+                const file = files[i];
+                
+                // Validar tipo de archivo
+                if (file.type !== 'application/pdf') {
+                    alert('Solo se permiten archivos PDF');
+                    continue;
+                }
+                
+                // Validar tamaño (5MB)
+                if (file.size > 5 * 1024 * 1024) {
+                    alert('El archivo no debe superar los 5MB');
+                    continue;
+                }
+                
+                // Aquí normalmente se subiría el archivo al servidor
+                // Por ahora solo simulamos la adición a la lista
+                addFileToList(file.name);
+            }
+        }
+        
+        function addFileToList(fileName) {
+            const fileList = document.querySelector('.file-list');
+            
+            const fileItem = document.createElement('div');
+            fileItem.className = 'file-item';
+            
+            fileItem.innerHTML = `
+                <div class="file-name">
+                    <i class="fas fa-file-pdf"></i>
+                    <span>${fileName}</span>
+                </div>
+                <div class="file-actions">
+                    <button><i class="fas fa-trash"></i></button>
+                </div>
+            `;
+            
+            // Agregar funcionalidad de eliminación
+            fileItem.querySelector('button').addEventListener('click', () => {
+                fileItem.remove();
+            });
+            
+            fileList.appendChild(fileItem);
+        }
+        
+        // Funcionalidad de eliminación para archivos existentes
+        document.querySelectorAll('.file-actions button').forEach(button => {
+            button.addEventListener('click', (e) => {
+                e.target.closest('.file-item').remove();
+            });
+        });
+    </script>
+</body>
+</html>

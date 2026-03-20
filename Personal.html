@@ -1,0 +1,1072 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SGRU - Portal Administrativo</title>
+    <style>
+        :root {
+            --primary-color: #1a4b8c;
+            --secondary-color: #2e7d32;
+            --accent-color: #ff9800;
+            --light-color: #f5f5f5;
+            --dark-color: #333;
+            --danger-color: #d32f2f;
+            --success-color: #388e3c;
+            --warning-color: #f57c00;
+            --info-color: #0288d1;
+            --border-radius: 8px;
+            --box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s ease;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f9f9f9;
+            color: var(--dark-color);
+            line-height: 1.6;
+        }
+        
+        header {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 1rem 0;
+            box-shadow: var(--box-shadow);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .container {
+            width: 90%;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+        
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+        }
+        
+        .logo img {
+            height: 50px;
+            margin-right: 15px;
+        }
+        
+        .logo h1 {
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+        
+        .user-menu {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .user-info {
+            text-align: right;
+        }
+        
+        .user-name {
+            font-weight: 600;
+        }
+        
+        .user-role {
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+        
+        .btn {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: var(--secondary-color);
+            color: white;
+            border: none;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            text-decoration: none;
+            font-weight: 500;
+            transition: var(--transition);
+        }
+        
+        .btn:hover {
+            background-color: #1b5e20;
+            transform: translateY(-2px);
+        }
+        
+        .btn-outline {
+            background-color: transparent;
+            border: 1px solid var(--primary-color);
+            color: var(--primary-color);
+        }
+        
+        .btn-outline:hover {
+            background-color: var(--primary-color);
+            color: white;
+        }
+        
+        .btn-danger {
+            background-color: var(--danger-color);
+        }
+        
+        .btn-danger:hover {
+            background-color: #b71c1c;
+        }
+        
+        .btn-warning {
+            background-color: var(--warning-color);
+        }
+        
+        .btn-warning:hover {
+            background-color: #e65100;
+        }
+        
+        .btn-info {
+            background-color: var(--info-color);
+        }
+        
+        .btn-info:hover {
+            background-color: #01579b;
+        }
+        
+        .dashboard {
+            padding: 2rem 0;
+        }
+        
+        .welcome-banner {
+            background: linear-gradient(rgba(26, 75, 140, 0.9), rgba(26, 75, 140, 0.8)), url('https://images.unsplash.com/photo-1562774053-701939374585?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80');
+            background-size: cover;
+            background-position: center;
+            color: white;
+            padding: 2rem;
+            border-radius: var(--border-radius);
+            margin-bottom: 2rem;
+            box-shadow: var(--box-shadow);
+        }
+        
+        .welcome-banner h2 {
+            font-size: 1.8rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .admin-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .stat-card {
+            background-color: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            padding: 1.5rem;
+            text-align: center;
+            transition: var(--transition);
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .stat-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .stat-postulaciones .stat-icon {
+            color: var(--info-color);
+        }
+        
+        .stat-residentes .stat-icon {
+            color: var(--success-color);
+        }
+        
+        .stat-pendientes .stat-icon {
+            color: var(--warning-color);
+        }
+        
+        .stat-vacantes .stat-icon {
+            color: var(--danger-color);
+        }
+        
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+        
+        .stat-label {
+            color: #666;
+            font-size: 0.9rem;
+        }
+        
+        .card {
+            background-color: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            transition: var(--transition);
+        }
+        
+        .card:hover {
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+        }
+        
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .card-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--primary-color);
+        }
+        
+        .card-actions {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .status-badge {
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+        
+        .status-pending {
+            background-color: #fff3e0;
+            color: #ef6c00;
+        }
+        
+        .status-approved {
+            background-color: #e8f5e9;
+            color: var(--success-color);
+        }
+        
+        .status-rejected {
+            background-color: #ffebee;
+            color: var(--danger-color);
+        }
+        
+        .status-complete {
+            background-color: #e3f2fd;
+            color: var(--primary-color);
+        }
+        
+        .status-in-progress {
+            background-color: #fff8e1;
+            color: #ff8f00;
+        }
+        
+        .status-observado {
+            background-color: #fce4ec;
+            color: #c2185b;
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+        
+        .form-control {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: var(--border-radius);
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+        }
+        
+        .form-control:focus {
+            border-color: var(--primary-color);
+            outline: none;
+        }
+        
+        .form-select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: var(--border-radius);
+            font-size: 1rem;
+            background-color: white;
+        }
+        
+        .tabs {
+            display: flex;
+            border-bottom: 1px solid #ddd;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+        }
+        
+        .tab {
+            padding: 10px 20px;
+            cursor: pointer;
+            border-bottom: 3px solid transparent;
+            transition: var(--transition);
+        }
+        
+        .tab.active {
+            border-bottom-color: var(--primary-color);
+            color: var(--primary-color);
+            font-weight: 500;
+        }
+        
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        .table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        .table th, .table td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        .table th {
+            background-color: #f5f5f5;
+            font-weight: 600;
+        }
+        
+        .table tr:hover {
+            background-color: #f9f9f9;
+        }
+        
+        .expediente-item, .incidence-item, .request-item {
+            padding: 15px;
+            border: 1px solid #eee;
+            border-radius: var(--border-radius);
+            margin-bottom: 15px;
+            transition: var(--transition);
+        }
+        
+        .expediente-item:hover, .incidence-item:hover, .request-item:hover {
+            border-color: var(--primary-color);
+        }
+        
+        .expediente-header, .incidence-header, .request-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        
+        .expediente-title, .incidence-title, .request-title {
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+        
+        .expediente-date, .incidence-date, .request-date {
+            color: #666;
+            font-size: 0.9rem;
+        }
+        
+        .expediente-info, .incidence-description, .request-description {
+            margin-bottom: 10px;
+        }
+        
+        .expediente-actions, .incidence-actions, .request-actions {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .notification {
+            padding: 15px;
+            border-radius: var(--border-radius);
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: flex-start;
+        }
+        
+        .notification.info {
+            background-color: #e3f2fd;
+            color: var(--primary-color);
+            border-left: 4px solid var(--primary-color);
+        }
+        
+        .notification.success {
+            background-color: #e8f5e9;
+            color: var(--success-color);
+            border-left: 4px solid var(--success-color);
+        }
+        
+        .notification.warning {
+            background-color: #fff3e0;
+            color: #ef6c00;
+            border-left: 4px solid #ef6c00;
+        }
+        
+        .notification.error {
+            background-color: #ffebee;
+            color: var(--danger-color);
+            border-left: 4px solid var(--danger-color);
+        }
+        
+        .notification i {
+            margin-right: 10px;
+            font-size: 1.2rem;
+            margin-top: 2px;
+        }
+        
+        .search-bar {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 1.5rem;
+        }
+        
+        .search-input {
+            flex: 1;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: var(--border-radius);
+            font-size: 1rem;
+        }
+        
+        .filters {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+        }
+        
+        .filter-group {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .filter-label {
+            font-size: 0.9rem;
+            margin-bottom: 5px;
+            color: #666;
+        }
+        
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+        }
+        
+        .dashboard-panel {
+            background-color: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            padding: 1.5rem;
+        }
+        
+        .dashboard-panel-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: var(--primary-color);
+        }
+        
+        .progress-bar {
+            height: 10px;
+            background-color: #eee;
+            border-radius: 5px;
+            margin-bottom: 1rem;
+            overflow: hidden;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background-color: var(--primary-color);
+            border-radius: 5px;
+        }
+        
+        .progress-labels {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.9rem;
+            color: #666;
+        }
+        
+        .quick-actions {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+        
+        .quick-action {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 1rem;
+            background-color: #f5f5f5;
+            border-radius: var(--border-radius);
+            transition: var(--transition);
+            cursor: pointer;
+            text-align: center;
+        }
+        
+        .quick-action:hover {
+            background-color: #e3f2fd;
+            transform: translateY(-3px);
+        }
+        
+        .quick-action i {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+            color: var(--primary-color);
+        }
+        
+        .quick-action span {
+            font-weight: 500;
+        }
+        
+        footer {
+            background-color: var(--dark-color);
+            color: white;
+            padding: 2rem 0;
+            margin-top: 3rem;
+        }
+        
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+        }
+        
+        .footer-section {
+            flex: 1;
+            min-width: 250px;
+            margin-bottom: 1.5rem;
+        }
+        
+        .footer-section h3 {
+            margin-bottom: 1rem;
+            font-size: 1.2rem;
+        }
+        
+        .footer-section ul {
+            list-style: none;
+        }
+        
+        .footer-section ul li {
+            margin-bottom: 0.5rem;
+        }
+        
+        .footer-section a {
+            color: #ddd;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        
+        .footer-section a:hover {
+            color: white;
+        }
+        
+        .copyright {
+            text-align: center;
+            padding-top: 1.5rem;
+            border-top: 1px solid #444;
+            margin-top: 1.5rem;
+        }
+        
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .logo {
+                margin-bottom: 1rem;
+            }
+            
+            .user-menu {
+                flex-direction: column;
+                gap: 10px;
+            }
+            
+            .user-info {
+                text-align: center;
+            }
+            
+            .tabs {
+                flex-direction: column;
+            }
+            
+            .tab {
+                text-align: center;
+            }
+            
+            .card-actions {
+                flex-direction: column;
+                width: 100%;
+            }
+            
+            .card-actions .btn {
+                width: 100%;
+                margin-bottom: 5px;
+            }
+            
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .search-bar {
+                flex-direction: column;
+            }
+        }
+    </style>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <img src="UNMSM.png" alt="Logo UNMSM">
+                    <h1>Sistema de Gestión de Residencia Universitaria</h1>
+                </div>
+                <div class="user-menu">
+                    <div class="user-info">
+                        <div class="user-name">Ana María Rodríguez</div>
+                        <div class="user-role">Personal Administrativo - OGBU</div>
+                    </div>
+                    <a href="#" class="btn btn-outline">Cerrar Sesión</a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <section class="dashboard container">
+        <div class="welcome-banner">
+            <h2>Panel de Administración - OGBU</h2>
+            <p>Gestión integral de postulaciones, residentes y servicios de la residencia universitaria</p>
+        </div>
+
+        <div class="admin-stats">
+            <div class="stat-card stat-postulaciones">
+                <i class="fas fa-file-alt stat-icon"></i>
+                <div class="stat-value">247</div>
+                <div class="stat-label">Postulaciones Recibidas</div>
+            </div>
+            <div class="stat-card stat-residentes">
+                <i class="fas fa-users stat-icon"></i>
+                <div class="stat-value">180</div>
+                <div class="stat-label">Residentes Activos</div>
+            </div>
+            <div class="stat-card stat-pendientes">
+                <i class="fas fa-tasks stat-icon"></i>
+                <div class="stat-value">42</div>
+                <div class="stat-label">Expedientes Pendientes</div>
+            </div>
+            <div class="stat-card stat-vacantes">
+                <i class="fas fa-bed stat-icon"></i>
+                <div class="stat-value">15</div>
+                <div class="stat-label">Habitaciones Disponibles</div>
+            </div>
+        </div>
+
+        <div class="dashboard-grid">
+            <div class="dashboard-panel">
+                <h3 class="dashboard-panel-title">Progreso de Convocatoria 2025-2</h3>
+                <div class="progress-bar">
+                    <div class="progress-fill" style="width: 65%;"></div>
+                </div>
+                <div class="progress-labels">
+                    <span>Inicio: 01/10/2025</span>
+                    <span>65% Completado</span>
+                    <span>Cierre: 30/11/2025</span>
+                </div>
+                
+                <div class="quick-actions">
+                    <div class="quick-action" data-action="nueva-convocatoria">
+                        <i class="fas fa-plus-circle"></i>
+                        <span>Nueva Convocatoria</span>
+                    </div>
+                    <div class="quick-action" data-action="gestionar-expedientes">
+                        <i class="fas fa-folder-open"></i>
+                        <span>Gestionar Expedientes</span>
+                    </div>
+                    <div class="quick-action" data-action="programar-entrevistas">
+                        <i class="fas fa-calendar-alt"></i>
+                        <span>Programar Entrevistas</span>
+                    </div>
+                    <div class="quick-action" data-action="generar-reportes">
+                        <i class="fas fa-chart-bar"></i>
+                        <span>Generar Reportes</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="dashboard-panel">
+                <h3 class="dashboard-panel-title">Alertas y Recordatorios</h3>
+                <div class="notification warning">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    <div>
+                        <strong>15 Expedientes con Documentación Incompleta</strong>
+                        <p>Requieren atención inmediata para continuar con el proceso de evaluación.</p>
+                    </div>
+                </div>
+                <div class="notification info">
+                    <i class="fas fa-info-circle"></i>
+                    <div>
+                        <strong>Entrevistas Pendientes para esta Semana</strong>
+                        <p>Hay 28 entrevistas socioeconómicas programadas para los próximos 7 días.</p>
+                    </div>
+                </div>
+                <div class="notification error">
+                    <i class="fas fa-clock"></i>
+                    <div>
+                        <strong>Plazo de Aclaraciones por Vencer</strong>
+                        <p>5 postulantes tienen hasta mañana para enviar documentación faltante.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="tabs">
+            <div class="tab active" data-tab="expedientes">Gestión de Expedientes</div>
+            <div class="tab" data-tab="entrevistas">Entrevistas Programadas</div>
+            <div class="tab" data-tab="asignacion">Asignación de Habitaciones</div>
+            <div class="tab" data-tab="reportes">Reportes e Indicadores</div>
+        </div>
+
+        <div class="tab-content active" id="expedientes">
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">Expedientes de Postulantes</h2>
+                    <div class="card-actions">
+                        <button class="btn" id="btn-nuevo-expediente">Nuevo Expediente</button>
+                        <button class="btn btn-outline">Exportar Listado</button>
+                    </div>
+                </div>
+                
+                <div class="search-bar">
+                    <input type="text" class="search-input" placeholder="Buscar por nombre, código o DNI...">
+                    <button class="btn btn-info">Buscar</button>
+                </div>
+                
+                <div class="filters">
+                    <div class="filter-group">
+                        <span class="filter-label">Estado</span>
+                        <select class="form-select">
+                            <option value="">Todos los estados</option>
+                            <option value="completo">Completo</option>
+                            <option value="observado">Observado</option>
+                            <option value="incompleto">Incompleto</option>
+                            <option value="rechazado">Rechazado</option>
+                            <option value="aprobado">Aprobado</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <span class="filter-label">Convocatoria</span>
+                        <select class="form-select">
+                            <option value="">Todas las convocatorias</option>
+                            <option value="2025-2">2025-2</option>
+                            <option value="2025-1">2025-1</option>
+                            <option value="2024-2">2024-2</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <span class="filter-label">Fecha</span>
+                        <input type="date" class="form-control">
+                    </div>
+                </div>
+                
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Código</th>
+                            <th>Postulante</th>
+                            <th>DNI</th>
+                            <th>Carrera</th>
+                            <th>Fecha Registro</th>
+                            <th>Estado</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>EXP-2025-0042</td>
+                            <td>María Elena González Torres</td>
+                            <td>76543210</td>
+                            <td>Ingeniería de Sistemas</td>
+                            <td>15/11/2025</td>
+                            <td><span class="status-badge status-complete">Completo</span></td>
+                            <td>
+                                <button class="btn btn-outline">Ver</button>
+                                <button class="btn btn-info">Evaluar</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>EXP-2025-0138</td>
+                            <td>Carlos Javier Mendoza Rojas</td>
+                            <td>71234567</td>
+                            <td>Medicina Humana</td>
+                            <td>14/11/2025</td>
+                            <td><span class="status-badge status-observado">Observado</span></td>
+                            <td>
+                                <button class="btn btn-outline">Ver</button>
+                                <button class="btn btn-warning">Revisar</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>EXP-2025-0089</td>
+                            <td>Lucía Fernanda Díaz Castillo</td>
+                            <td>72345678</td>
+                            <td>Derecho y Ciencia Política</td>
+                            <td>12/11/2025</td>
+                            <td><span class="status-badge status-pending">Pendiente</span></td>
+                            <td>
+                                <button class="btn btn-outline">Ver</button>
+                                <button class="btn btn-info">Evaluar</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>EXP-2025-0023</td>
+                            <td>Jorge Luis Silva Pérez</td>
+                            <td>73456789</td>
+                            <td>Administración</td>
+                            <td>10/11/2025</td>
+                            <td><span class="status-badge status-approved">Aprobado</span></td>
+                            <td>
+                                <button class="btn btn-outline">Ver</button>
+                                <button class="btn btn-info">Asignar</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>EXP-2025-0195</td>
+                            <td>Ana Patricia López García</td>
+                            <td>74567890</td>
+                            <td>Psicología</td>
+                            <td>09/11/2025</td>
+                            <td><span class="status-badge status-rejected">Rechazado</span></td>
+                            <td>
+                                <button class="btn btn-outline">Ver</button>
+                                <button class="btn btn-outline">Notificar</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                
+                <div style="text-align: center; margin-top: 1.5rem;">
+                    <button class="btn btn-outline">Cargar más resultados</button>
+                </div>
+            </div>
+        </div>
+        
+        <div class="tab-content" id="entrevistas">
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">Entrevistas Socioeconómicas Programadas</h2>
+                    <div class="card-actions">
+                        <button class="btn" id="btn-nueva-entrevista">Programar Entrevista</button>
+                        <button class="btn btn-outline">Ver Calendario</button>
+                    </div>
+                </div>
+                
+                <div class="notification info">
+                    <i class="fas fa-info-circle"></i>
+                    <div>
+                        <strong>Entrevistas del Día</strong>
+                        <p>Hoy hay 5 entrevistas programadas. La próxima entrevista es a las 10:30 AM con el postulante Carlos Mendoza.</p>
+                    </div>
+                </div>
+                
+                <div class="expediente-item">
+                    <div class="expediente-header">
+                        <div class="expediente-title">Carlos Javier Mendoza Rojas</div>
+                        <span class="status-badge status-pending">Pendiente</span>
+                    </div>
+                    <div class="expediente-date"><i class="far fa-calendar"></i> 18/11/2025 - 10:30 AM</div>
+                    <div class="expediente-info">
+                        <p><strong>DNI:</strong> 71234567 | <strong>Carrera:</strong> Medicina Humana | <strong>Entrevistador:</strong> Trab. Social Elena Ruiz</p>
+                    </div>
+                    <div class="expediente-actions">
+                        <button class="btn btn-outline">Ver Expediente</button>
+                        <button class="btn">Iniciar Entrevista</button>
+                        <button class="btn btn-warning">Reprogramar</button>
+                    </div>
+                </div>
+                
+                <div class="expediente-item">
+                    <div class="expediente-header">
+                        <div class="expediente-title">Lucía Fernanda Díaz Castillo</div>
+                        <span class="status-badge status-in-progress">En Progreso</span>
+                    </div>
+                    <div class="expediente-date"><i class="far fa-calendar"></i> 18/11/2025 - 11:15 AM</div>
+                    <div class="expediente-info">
+                        <p><strong>DNI:</strong> 72345678 | <strong>Carrera:</strong> Derecho y Ciencia Política | <strong>Entrevistador:</strong> Trab. Social Elena Ruiz</p>
+                    </div>
+                    <div class="expediente-actions">
+                        <button class="btn btn-outline">Ver Expediente</button>
+                        <button class="btn btn-info">Continuar Entrevista</button>
+                        <button class="btn btn-warning">Reprogramar</button>
+                    </div>
+                </div>
+                
+                <div class="expediente-item">
+                    <div class="expediente-header">
+                        <div class="expediente-title">Miguel Ángel Torres Sánchez</div>
+                        <span class="status-badge status-complete">Realizada</span>
+                    </div>
+                    <div class="expediente-date"><i class="far fa-calendar"></i> 17/11/2025 - 09:00 AM</div>
+                    <div class="expediente-info">
+                        <p><strong>DNI:</strong> 75678901 | <strong>Carrera:</strong> Ingeniería Industrial | <strong>Entrevistador:</strong> Trab. Social Roberto Mendoza</p>
+                    </div>
+                    <div class="expediente-actions">
+                        <button class="btn btn-outline">Ver Expediente</button>
+                        <button class="btn">Ver Informe</button>
+                        <button class="btn btn-info">Calificar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="tab-content" id="asignacion">
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">Asignación de Habitaciones</h2>
+                    <div class="card-actions">
+                        <button class="btn">Nueva Asignación</button>
+                        <button class="btn btn-outline">Ver Mapa de Ocupación</button>
+                    </div>
+                </div>
+                
+                <div class="notification info">
+                    <i class="fas fa-info-circle"></i>
+                    <div>
+                        <strong>Estado de Ocupación</strong>
+                        <p>Actualmente hay 180 residentes activos y 15 habitaciones disponibles para asignación.</p>
+                    </div>
+                </div>
+                
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Habitación</th>
+                            <th>Edificio</th>
+                            <th>Capacidad</th>
+                            <th>Ocupación</th>
+                            <th>Residentes</th>
+                            <th>Estado</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>101</td>
+                            <td>Torre A</td>
+                            <td>2 personas</td>
+                            <td>2/2</td>
+                            <td>María González, Laura Silva</td>
+                            <td><span class="status-badge status-complete">Ocupada</span></td>
+                            <td>
+                                <button class="btn btn-outline">Ver Detalles</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>204</td>
+                            <td>Torre A</td>
+                            <td>2 personas</td>
+                            <td>1/2</td>
+                            <td>Carlos Mendoza</td>
+                            <td><span class="status-badge status-in-progress">Parcialmente Ocupada</span></td>
+                            <td>
+                                <button class="btn btn-outline">Ver Detalles</button>
+                                <button class="btn">Asignar</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>305</td>
+                            <td>Torre B</td>
+                            <td>2 personas</td>
+                            <td>0/2</td>
+                            <td>-</td>
+                            <td><span class="status-badge status-pending">Disponible</span></td>
+                            <td>
+                                <button class="btn btn-outline">Ver Detalles</button>
+                                <button class="btn">Asignar</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>412</td>
+                            <td>Torre B</td>
+                            <td>1 persona</td>
+                            <td>1/1</td>
+                            <td>Ana López</td>
+                            <td><span class="status-badge status-complete">Ocupada</span></td>
+                            <td>
+                                <button class="btn btn-outline">Ver Detalles</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>215</td>
+                            <td>Torre A</td>
+                            <td>2 personas</td>
+                            <td>0/2</td>
+                            <td>-</td>
+                            <td><span class="status-badge status-pending">Disponible</span></td>
+                            <td>
+                                <button class="btn btn-outline">Ver Detalles</button>
+                                <button class="btn">Asignar</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        
+        <div class="tab-content" id="reportes">
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">Reportes e Indicadores</h2>
+                    <div class="card-actions">
+                        <button class="btn">Generar Nuevo Reporte</button>
+                        <button class="btn btn-outline">Descargar Todos</button>
+                    </div>
+                </div>
+                
+                <div class="notification success">
+                    <i class="fas fa-chart-line"></i>
+                    <div>
+                        <strong>Indicadores de Gestión</strong>
+                        <p>Los tiempos de procesamiento se han reducido en un 45% comparado con el período anterior.</p>
+                    </div>
+                </div>
+                
+                <div class="dashboard-grid">
+                    <div class="dashboard-panel">
+                        <h3 class="dashboard-panel-title">Reportes Disponibles</h3>
+                        <div class="quick-actions">
+                            <div class="quick-action" data-action="reporte-postulaciones">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Postulaciones por Estado</span

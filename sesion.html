@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Iniciar Sesión - SGRU UNMSM</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #003366;
+            --secondary-color: #990000;
+            --accent-color: #0066cc;
+            --light-color: #f5f5f5;
+            --dark-color: #333333;
+            --card-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s ease;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: url('biblio (1).png') center/cover no-repeat;
+            color: var(--dark-color);
+            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        
+        .login-container {
+            width: 100%;
+            max-width: 1100px;
+            display: flex;
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: var(--card-shadow);
+            animation: fadeIn 0.8s ease;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .login-left {
+            flex: 1;
+            background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+            color: white;
+            padding: 3rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .login-left::before {
+            content: '';
+            position: absolute;
+            top: -50px;
+            right: -50px;
+            width: 200px;
+            height: 200px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+        }
+        
+        .login-left::after {
+            content: '';
+            position: absolute;
+            bottom: -80px;
+            left: -80px;
+            width: 250px;
+            height: 250px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+        }
+        
+        .logo-section {
+            display: flex;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+        
+        .logo {
+            width: 175px;
+            height: 130px;
+            background: white;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+            font-weight: bold;
+            color: var(--primary-color);
+            font-size: 1.5rem;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .logo-text h1 {
+            font-size: 1.8rem;
+            margin-bottom: 5px;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
+        }
+        
+        .logo-text p {
+            opacity: 0.9;
+            font-size: 1rem;
+        }
+        
+        .welcome-text {
+            margin-bottom: 2rem;
+        }
+        
+        .welcome-text h2 {
+            font-size: 2.2rem;
+            margin-bottom: 1rem;
+            line-height: 1.2;
+        }
+        
+        .welcome-text p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+            line-height: 1.6;
+        }
+        
+        .features-list {
+            list-style: none;
+            margin-top: 2rem;
+        }
+        
+        .features-list li {
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            font-size: 1rem;
+        }
+        
+        .features-list i {
+            margin-right: 12px;
+            background: rgba(255, 255, 255, 0.2);
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .login-right {
+            flex: 1;
+            padding: 3rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        
+        .login-header {
+            text-align: center;
+            margin-bottom: 2.5rem;
+        }
+        
+        .login-header h2 {
+            font-size: 2rem;
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
+        }
+        
+        .login-header p {
+            color: #666;
+            font-size: 1.1rem;
+        }
+        
+        .user-type-selection {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2.5rem;
+        }
+        
+        .user-card {
+            background: white;
+            border-radius: 12px;
+            padding: 1.5rem 1rem;
+            text-align: center;
+            cursor: pointer;
+            transition: var(--transition);
+            border: 2px solid #e0e0e0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .user-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--card-shadow);
+            border-color: var(--accent-color);
+        }
+        
+        .user-card.active {
+            border-color: var(--accent-color);
+            background-color: rgba(0, 102, 204, 0.05);
+        }
+        
+        .user-icon {
+            font-size: 2.5rem;
+            color: var(--accent-color);
+            margin-bottom: 10px;
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(0, 102, 204, 0.1);
+        }
+        
+        .user-card h3 {
+            font-size: 1.1rem;
+            margin-bottom: 5px;
+            color: var(--primary-color);
+        }
+        
+        .user-card p {
+            font-size: 0.85rem;
+            color: #666;
+        }
+        
+        .login-form {
+            display: none;
+            animation: slideUp 0.5s ease;
+        }
+        
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: var(--dark-color);
+        }
+        
+        .input-with-icon {
+            position: relative;
+        }
+        
+        .input-with-icon i {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #999;
+        }
+        
+        .form-control {
+            width: 100%;
+            padding: 15px 15px 15px 45px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: var(--transition);
+        }
+        
+        .form-control:focus {
+            border-color: var(--accent-color);
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(0, 102, 204, 0.2);
+        }
+        
+        .form-actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 1.5rem;
+        }
+        
+        .btn {
+            padding: 14px 25px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: var(--transition);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            font-size: 1rem;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, var(--accent-color), #0044cc);
+            color: white;
+            flex: 1;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 7px 15px rgba(0, 102, 204, 0.3);
+        }
+        
+        .btn-outline {
+            background: transparent;
+            border: 2px solid var(--accent-color);
+            color: var(--accent-color);
+        }
+        
+        .btn-outline:hover {
+            background: var(--accent-color);
+            color: white;
+        }
+        
+        .forgot-password {
+            color: var(--accent-color);
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: var(--transition);
+        }
+        
+        .forgot-password:hover {
+            text-decoration: underline;
+        }
+        
+        .back-to-home {
+            text-align: center;
+            margin-top: 2rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid #eee;
+        }
+        
+        .back-to-home a {
+            color: var(--accent-color);
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: var(--transition);
+        }
+        
+        .back-to-home a:hover {
+            gap: 12px;
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 900px) {
+            .login-container {
+                flex-direction: column;
+                max-width: 500px;
+            }
+            
+            .login-left {
+                padding: 2rem;
+            }
+            
+            .login-right {
+                padding: 2rem;
+            }
+        }
+        
+        @media (max-width: 500px) {
+            .user-type-selection {
+                grid-template-columns: 1fr;
+            }
+            
+            .logo-section {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .logo {
+                margin-right: 0;
+                margin-bottom: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <div class="login-left">
+            <div class="logo-section">
+                <div class="logo">
+                    <img src="unmsm2.png" alt="UNMSM" style="width: 100%; height: 100%; object-fit: contain; border-radius: 8px;">
+                </div>
+                <div class="logo-text">
+                    <h1>Sistema de Gestión de Residencia Universitaria</h1>
+                    <p>UNMSM - Oficina General de Bienestar Universitario</p>
+                </div>
+            </div>
+            
+            <div class="welcome-text">
+                <h2>Bienvenido al SGRU</h2>
+                <p>Accede a tu cuenta para gestionar tu postulación, residente o funciones administrativas de manera segura y eficiente.</p>
+            </div>
+            
+            <ul class="features-list">
+                <li><i class="fas fa-shield-alt"></i> Acceso seguro con autenticación institucional</li>
+                <li><i class="fas fa-bolt"></i> Procesos optimizados y digitalizados</li>
+                <li><i class="fas fa-chart-line"></i> Seguimiento en tiempo real de tus trámites</li>
+                <li><i class="fas fa-mobile-alt"></i> Interfaz responsive para todos los dispositivos</li>
+            </ul>
+        </div>
+        
+        <div class="login-right">
+            <div class="login-header">
+                <h2>Iniciar Sesión</h2>
+                <p>Selecciona tu tipo de usuario para continuar</p>
+            </div>
+            
+            <div class="user-type-selection">
+                <div class="user-card" data-user-type="postulante">
+                    <div class="user-icon">
+                        <i class="fas fa-user-graduate"></i>
+                    </div>
+                    <h3>Postulante</h3>
+                    <p>Estudiante que desea aplicar a la residencia</p>
+                </div>
+                <div class="user-card" data-user-type="residente">
+                    <div class="user-icon">
+                        <i class="fas fa-home"></i>
+                    </div>
+                    <h3>Residente</h3>
+                    <p>Estudiante que ya vive en la residencia</p>
+                </div>
+                <div class="user-card" data-user-type="administrativo">
+                    <div class="user-icon">
+                        <i class="fas fa-user-tie"></i>
+                    </div>
+                    <h3>Personal Administrativo</h3>
+                    <p>Personal de la OGBU y comisiones</p>
+                </div>
+            </div>
+            
+            <div class="login-form" id="postulante-form">
+                <h3 style="text-align: center; margin-bottom: 1.5rem; color: var(--primary-color);">Inicio de Sesión - Postulante</h3>
+                <div class="form-group">
+                    <label for="postulante-username">Código Universitario</label>
+                    <div class="input-with-icon">
+                        <i class="fas fa-user"></i>
+                        <input type="text" id="postulante-username" class="form-control" placeholder="Ingresa tu código universitario">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="postulante-password">Contraseña</label>
+                    <div class="input-with-icon">
+                        <i class="fas fa-lock"></i>
+                        <input type="password" id="postulante-password" class="form-control" placeholder="Ingresa tu contraseña">
+                    </div>
+                </div>
+                <div class="form-actions">
+                    <a href="#" class="forgot-password">¿Olvidaste tu contraseña?</a>
+                    <button class="btn btn-primary">
+                        <i class="fas fa-sign-in-alt"></i> Ingresar
+                    </button>
+                </div>
+            </div>
+            
+            <div class="login-form" id="residente-form">
+                <h3 style="text-align: center; margin-bottom: 1.5rem; color: var(--primary-color);">Inicio de Sesión - Residente</h3>
+                <div class="form-group">
+                    <label for="residente-username">Código de Residente</label>
+                    <div class="input-with-icon">
+                        <i class="fas fa-id-card"></i>
+                        <input type="text" id="residente-username" class="form-control" placeholder="Ingresa tu código de residente">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="residente-password">Contraseña</label>
+                    <div class="input-with-icon">
+                        <i class="fas fa-lock"></i>
+                        <input type="password" id="residente-password" class="form-control" placeholder="Ingresa tu contraseña">
+                    </div>
+                </div>
+                <div class="form-actions">
+                    <a href="#" class="forgot-password">¿Olvidaste tu contraseña?</a>
+                    <button class="btn btn-primary">
+                        <i class="fas fa-sign-in-alt"></i> Ingresar
+                    </button>
+                </div>
+            </div>
+            
+            <div class="login-form" id="administrativo-form">
+                <h3 style="text-align: center; margin-bottom: 1.5rem; color: var(--primary-color);">Inicio de Sesión - Personal Administrativo</h3>
+                <div class="form-group">
+                    <label for="admin-username">Usuario</label>
+                    <div class="input-with-icon">
+                        <i class="fas fa-user-tie"></i>
+                        <input type="text" id="admin-username" class="form-control" placeholder="Ingresa tu usuario">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="admin-password">Contraseña</label>
+                    <div class="input-with-icon">
+                        <i class="fas fa-lock"></i>
+                        <input type="password" id="admin-password" class="form-control" placeholder="Ingresa tu contraseña">
+                    </div>
+                </div>
+                <div class="form-actions">
+                    <a href="#" class="forgot-password">¿Olvidaste tu contraseña?</a>
+                    <button class="btn btn-primary">
+                        <i class="fas fa-sign-in-alt"></i> Ingresar
+                    </button>
+                </div>
+            </div>
+            
+            <div class="back-to-home">
+                <a href="index.html">
+                    <i class="fas fa-arrow-left"></i> Volver a la página principal
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const userCards = document.querySelectorAll('.user-card');
+            const loginForms = document.querySelectorAll('.login-form');
+            
+            // User type selection
+            userCards.forEach(card => {
+                card.addEventListener('click', function() {
+                    // Remove active class from all cards
+                    userCards.forEach(c => c.classList.remove('active'));
+                    
+                    // Add active class to clicked card
+                    this.classList.add('active');
+                    
+                    // Hide all login forms
+                    loginForms.forEach(form => form.style.display = 'none');
+                    
+                    // Show the corresponding login form
+                    const userType = this.getAttribute('data-user-type');
+                    const formToShow = document.getElementById(`${userType}-form`);
+                    if (formToShow) {
+                        formToShow.style.display = 'block';
+                    }
+                });
+            });
+            
+            // Form submission
+            document.querySelectorAll('.btn-primary').forEach(button => {
+                button.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const form = this.closest('.login-form');
+                    const usernameInput = form.querySelector('input[type="text"]');
+                    const passwordInput = form.querySelector('input[type="password"]');
+                    
+                    if (usernameInput.value && passwordInput.value) {
+                        // Simulate login process
+                        this.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Verificando...';
+                        this.disabled = true;
+                        
+                        setTimeout(() => {
+                            alert('Inicio de sesión exitoso. Redirigiendo...');
+                            // In a real application, you would redirect to the dashboard
+                        }, 1500);
+                    } else {
+                        alert('Por favor, completa todos los campos');
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>

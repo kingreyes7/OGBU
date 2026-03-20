@@ -1,0 +1,1020 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SGRU - Portal del Residente</title>
+    <style>
+        :root {
+            --primary-color: #1a4b8c;
+            --secondary-color: #2e7d32;
+            --accent-color: #ff9800;
+            --light-color: #f5f5f5;
+            --dark-color: #333;
+            --danger-color: #d32f2f;
+            --success-color: #388e3c;
+            --warning-color: #f57c00;
+            --border-radius: 8px;
+            --box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s ease;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f9f9f9;
+            color: var(--dark-color);
+            line-height: 1.6;
+        }
+        
+        header {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 1rem 0;
+            box-shadow: var(--box-shadow);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+        
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+        }
+        
+        .logo img {
+            height: 50px;
+            margin-right: 15px;
+        }
+        
+        .logo h1 {
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+        
+        .user-menu {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .user-info {
+            text-align: right;
+        }
+        
+        .user-name {
+            font-weight: 600;
+        }
+        
+        .user-role {
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+        
+        .btn {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: var(--secondary-color);
+            color: white;
+            border: none;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            text-decoration: none;
+            font-weight: 500;
+            transition: var(--transition);
+        }
+        
+        .btn:hover {
+            background-color: #1b5e20;
+            transform: translateY(-2px);
+        }
+        
+        .btn-outline {
+            background-color: transparent;
+            border: 1px solid var(--primary-color);
+            color: var(--primary-color);
+        }
+        
+        .btn-outline:hover {
+            background-color: var(--primary-color);
+            color: white;
+        }
+        
+        .btn-danger {
+            background-color: var(--danger-color);
+        }
+        
+        .btn-danger:hover {
+            background-color: #b71c1c;
+        }
+        
+        .btn-warning {
+            background-color: var(--warning-color);
+        }
+        
+        .btn-warning:hover {
+            background-color: #e65100;
+        }
+        
+        .dashboard {
+            padding: 2rem 0;
+        }
+        
+        .welcome-banner {
+            background: linear-gradient(rgba(26, 75, 140, 0.9), rgba(26, 75, 140, 0.8)), url('https://images.unsplash.com/photo-1555854877-bab0e564b8d5?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80');
+            background-size: cover;
+            background-position: center;
+            color: white;
+            padding: 2rem;
+            border-radius: var(--border-radius);
+            margin-bottom: 2rem;
+            box-shadow: var(--box-shadow);
+        }
+        
+        .welcome-banner h2 {
+            font-size: 1.8rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .stat-card {
+            background-color: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            padding: 1.5rem;
+            text-align: center;
+            transition: var(--transition);
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .stat-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            color: var(--primary-color);
+        }
+        
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+        
+        .stat-label {
+            color: #666;
+            font-size: 0.9rem;
+        }
+        
+        .card {
+            background-color: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            transition: var(--transition);
+        }
+        
+        .card:hover {
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+        }
+        
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .card-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--primary-color);
+        }
+        
+        .card-actions {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .status-badge {
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+        
+        .status-pending {
+            background-color: #fff3e0;
+            color: #ef6c00;
+        }
+        
+        .status-approved {
+            background-color: #e8f5e9;
+            color: var(--success-color);
+        }
+        
+        .status-rejected {
+            background-color: #ffebee;
+            color: var(--danger-color);
+        }
+        
+        .status-complete {
+            background-color: #e3f2fd;
+            color: var(--primary-color);
+        }
+        
+        .status-in-progress {
+            background-color: #fff8e1;
+            color: #ff8f00;
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+        
+        .form-control {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: var(--border-radius);
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+        }
+        
+        .form-control:focus {
+            border-color: var(--primary-color);
+            outline: none;
+        }
+        
+        .form-select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: var(--border-radius);
+            font-size: 1rem;
+            background-color: white;
+        }
+        
+        .tabs {
+            display: flex;
+            border-bottom: 1px solid #ddd;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+        }
+        
+        .tab {
+            padding: 10px 20px;
+            cursor: pointer;
+            border-bottom: 3px solid transparent;
+            transition: var(--transition);
+        }
+        
+        .tab.active {
+            border-bottom-color: var(--primary-color);
+            color: var(--primary-color);
+            font-weight: 500;
+        }
+        
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        .table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        .table th, .table td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        .table th {
+            background-color: #f5f5f5;
+            font-weight: 600;
+        }
+        
+        .table tr:hover {
+            background-color: #f9f9f9;
+        }
+        
+        .incidence-item, .request-item {
+            padding: 15px;
+            border: 1px solid #eee;
+            border-radius: var(--border-radius);
+            margin-bottom: 15px;
+            transition: var(--transition);
+        }
+        
+        .incidence-item:hover, .request-item:hover {
+            border-color: var(--primary-color);
+        }
+        
+        .incidence-header, .request-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        
+        .incidence-title, .request-title {
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+        
+        .incidence-date, .request-date {
+            color: #666;
+            font-size: 0.9rem;
+        }
+        
+        .incidence-description, .request-description {
+            margin-bottom: 10px;
+        }
+        
+        .incidence-actions, .request-actions {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .notification {
+            padding: 15px;
+            border-radius: var(--border-radius);
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: flex-start;
+        }
+        
+        .notification.info {
+            background-color: #e3f2fd;
+            color: var(--primary-color);
+            border-left: 4px solid var(--primary-color);
+        }
+        
+        .notification.success {
+            background-color: #e8f5e9;
+            color: var(--success-color);
+            border-left: 4px solid var(--success-color);
+        }
+        
+        .notification.warning {
+            background-color: #fff3e0;
+            color: #ef6c00;
+            border-left: 4px solid #ef6c00;
+        }
+        
+        .notification.error {
+            background-color: #ffebee;
+            color: var(--danger-color);
+            border-left: 4px solid var(--danger-color);
+        }
+        
+        .notification i {
+            margin-right: 10px;
+            font-size: 1.2rem;
+            margin-top: 2px;
+        }
+        
+        .room-info {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .room-detail {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 1rem;
+            background-color: #f5f5f5;
+            border-radius: var(--border-radius);
+        }
+        
+        .room-detail i {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+            color: var(--primary-color);
+        }
+        
+        .room-detail-label {
+            font-size: 0.9rem;
+            color: #666;
+        }
+        
+        .room-detail-value {
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+        
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 1rem;
+        }
+        
+        .service-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 1rem;
+            background-color: #f9f9f9;
+            border-radius: var(--border-radius);
+            transition: var(--transition);
+        }
+        
+        .service-item:hover {
+            background-color: #e3f2fd;
+        }
+        
+        .service-icon {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+            color: var(--primary-color);
+        }
+        
+        .service-name {
+            font-weight: 500;
+            text-align: center;
+        }
+        
+        .calendar {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 5px;
+            margin-top: 1rem;
+        }
+        
+        .calendar-header {
+            text-align: center;
+            font-weight: 600;
+            padding: 10px;
+            background-color: #f5f5f5;
+            border-radius: var(--border-radius);
+        }
+        
+        .calendar-day {
+            padding: 10px;
+            text-align: center;
+            border: 1px solid #eee;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        
+        .calendar-day:hover {
+            background-color: #e3f2fd;
+        }
+        
+        .calendar-day.current {
+            background-color: var(--primary-color);
+            color: white;
+        }
+        
+        .calendar-day.event {
+            background-color: #e8f5e9;
+            border-color: var(--success-color);
+        }
+        
+        footer {
+            background-color: var(--dark-color);
+            color: white;
+            padding: 2rem 0;
+            margin-top: 3rem;
+        }
+        
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+        }
+        
+        .footer-section {
+            flex: 1;
+            min-width: 250px;
+            margin-bottom: 1.5rem;
+        }
+        
+        .footer-section h3 {
+            margin-bottom: 1rem;
+            font-size: 1.2rem;
+        }
+        
+        .footer-section ul {
+            list-style: none;
+        }
+        
+        .footer-section ul li {
+            margin-bottom: 0.5rem;
+        }
+        
+        .footer-section a {
+            color: #ddd;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        
+        .footer-section a:hover {
+            color: white;
+        }
+        
+        .copyright {
+            text-align: center;
+            padding-top: 1.5rem;
+            border-top: 1px solid #444;
+            margin-top: 1.5rem;
+        }
+        
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .logo {
+                margin-bottom: 1rem;
+            }
+            
+            .user-menu {
+                flex-direction: column;
+                gap: 10px;
+            }
+            
+            .user-info {
+                text-align: center;
+            }
+            
+            .tabs {
+                flex-direction: column;
+            }
+            
+            .tab {
+                text-align: center;
+            }
+            
+            .card-actions {
+                flex-direction: column;
+                width: 100%;
+            }
+            
+            .card-actions .btn {
+                width: 100%;
+                margin-bottom: 5px;
+            }
+        }
+    </style>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <img src="UNMSM.png" alt="Logo UNMSM">
+                    <h1>Sistema de Gestión de Residencia Universitaria</h1>
+                </div>
+                <div class="user-menu">
+                    <div class="user-info">
+                        <div class="user-name">Adrián Ordinola Moscoso</div>
+                        <div class="user-role">Residente - Habitación 204</div>
+                    </div>
+                    <a href="#" class="btn btn-outline">Cerrar Sesión</a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <section class="dashboard container">
+        <div class="welcome-banner">
+            <h2>Bienvenido, Adrián Salvador</h2>
+            <p>Residente de la Residencia Universitaria UNMSM - Período 2025-2</p>
+        </div>
+
+        <div class="stats-grid">
+            <div class="stat-card">
+                <i class="fas fa-home stat-icon"></i>
+                <div class="stat-value">204</div>
+                <div class="stat-label">Habitación Asignada</div>
+            </div>
+            <div class="stat-card">
+                <i class="fas fa-calendar-day stat-icon"></i>
+                <div class="stat-value">145</div>
+                <div class="stat-label">Días Restantes</div>
+            </div>
+            <div class="stat-card">
+                <i class="fas fa-tools stat-icon"></i>
+                <div class="stat-value">2</div>
+                <div class="stat-label">Incidencias Activas</div>
+            </div>
+            <div class="stat-card">
+                <i class="fas fa-clipboard-check stat-icon"></i>
+                <div class="stat-value">5</div>
+                <div class="stat-label">Solicitudes Realizadas</div>
+            </div>
+        </div>
+
+        <div class="notification info">
+            <i class="fas fa-info-circle"></i>
+            <div>
+                <strong>Recordatorio Importante</strong>
+                <p>El pago de la residencia para el mes de diciembre vence el 25 de noviembre. Por favor, realiza el pago a tiempo para evitar inconvenientes.</p>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header">
+                <h2 class="card-title">Mi Habitación</h2>
+                <div class="card-actions">
+                    <button class="btn btn-outline">Solicitar Mantenimiento</button>
+                </div>
+            </div>
+            
+            <div class="room-info">
+                <div class="room-detail">
+                    <i class="fas fa-door-open"></i>
+                    <div class="room-detail-label">Número de Habitación</div>
+                    <div class="room-detail-value">204</div>
+                </div>
+                <div class="room-detail">
+                    <i class="fas fa-building"></i>
+                    <div class="room-detail-label">Edificio</div>
+                    <div class="room-detail-value">Torre A</div>
+                </div>
+                <div class="room-detail">
+                    <i class="fas fa-users"></i>
+                    <div class="room-detail-label">Capacidad</div>
+                    <div class="room-detail-value">2 personas</div>
+                </div>
+                <div class="room-detail">
+                    <i class="fas fa-calendar-alt"></i>
+                    <div class="room-detail-label">Fecha de Asignación</div>
+                    <div class="room-detail-value">15/08/2025</div>
+                </div>
+            </div>
+            
+            <h3 style="margin-bottom: 1rem;">Servicios Incluidos</h3>
+            <div class="services-grid">
+                <div class="service-item">
+                    <i class="fas fa-wifi service-icon"></i>
+                    <div class="service-name">Wi-Fi</div>
+                </div>
+                <div class="service-item">
+                    <i class="fas fa-tint service-icon"></i>
+                    <div class="service-name">Agua Caliente</div>
+                </div>
+                <div class="service-item">
+                    <i class="fas fa-bed service-icon"></i>
+                    <div class="service-name">Cama Individual</div>
+                </div>
+                <div class="service-item">
+                    <i class="fas fa-desktop service-icon"></i>
+                    <div class="service-name">Escritorio</div>
+                </div>
+                <div class="service-item">
+                    <i class="fas fa-tshirt service-icon"></i>
+                    <div class="service-name">Lavandería</div>
+                </div>
+                <div class="service-item">
+                    <i class="fas fa-utensils service-icon"></i>
+                    <div class="service-name">Comedor</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="tabs">
+            <div class="tab active" data-tab="incidencias">Gestión de Incidencias</div>
+            <div class="tab" data-tab="solicitudes">Solicitudes de Servicios</div>
+            <div class="tab" data-tab="pagos">Estado de Pagos</div>
+            <div class="tab" data-tab="calendario">Calendario de Actividades</div>
+        </div>
+
+        <div class="tab-content active" id="incidencias">
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">Registro de Incidencias</h2>
+                    <div class="card-actions">
+                        <button class="btn" id="btn-nueva-incidencia">Nueva Incidencia</button>
+                    </div>
+                </div>
+                
+                <div class="notification warning">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    <div>
+                        <strong>Incidencias Activas</strong>
+                        <p>Tienes 2 incidencias pendientes de resolución.</p>
+                    </div>
+                </div>
+                
+                <div class="incidence-item">
+                    <div class="incidence-header">
+                        <div class="incidence-title">Fuga de agua en el lavatorio</div>
+                        <span class="status-badge status-in-progress">En Proceso</span>
+                    </div>
+                    <div class="incidence-date"><i class="far fa-calendar"></i> Reportado: 10/11/2025</div>
+                    <div class="incidence-description">
+                        <p>Se detectó una fuga constante de agua en el lavatorio del baño. El agua gotea aproximadamente cada 3 segundos.</p>
+                    </div>
+                    <div class="incidence-actions">
+                        <button class="btn btn-outline">Ver Detalles</button>
+                        <button class="btn btn-warning">Seguimiento</button>
+                    </div>
+                </div>
+                
+                <div class="incidence-item">
+                    <div class="incidence-header">
+                        <div class="incidence-title">Luz del pasillo no funciona</div>
+                        <span class="status-badge status-pending">Pendiente</span>
+                    </div>
+                    <div class="incidence-date"><i class="far fa-calendar"></i> Reportado: 12/11/2025</div>
+                    <div class="incidence-description">
+                        <p>La luz del pasillo frente a la habitación 204 no enciende. Ya se verificó que no es problema del interruptor.</p>
+                    </div>
+                    <div class="incidence-actions">
+                        <button class="btn btn-outline">Ver Detalles</button>
+                        <button class="btn btn-warning">Seguimiento</button>
+                    </div>
+                </div>
+                
+                <div class="incidence-item">
+                    <div class="incidence-header">
+                        <div class="incidence-title">Problema con conexión Wi-Fi</div>
+                        <span class="status-badge status-complete">Resuelto</span>
+                    </div>
+                    <div class="incidence-date"><i class="far fa-calendar"></i> Reportado: 05/11/2025 - Resuelto: 07/11/2025</div>
+                    <div class="incidence-description">
+                        <p>La señal Wi-Fi en la habitación era muy débil. El técnico instaló un repetidor de señal.</p>
+                    </div>
+                    <div class="incidence-actions">
+                        <button class="btn btn-outline">Ver Detalles</button>
+                        <button class="btn">Calificar Servicio</button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="card" id="form-incidencia" style="display: none;">
+                <div class="card-header">
+                    <h2 class="card-title">Nueva Incidencia</h2>
+                </div>
+                
+                <form id="incidencia-form">
+                    <div class="form-group">
+                        <label class="form-label" for="tipo-incidencia">Tipo de Incidencia</label>
+                        <select class="form-select" id="tipo-incidencia" required>
+                            <option value="">Seleccione un tipo</option>
+                            <option value="electricidad">Problema Eléctrico</option>
+                            <option value="plomeria">Problema de Plomería</option>
+                            <option value="internet">Problema de Internet</option>
+                            <option value="mobiliario">Mobiliario Dañado</option>
+                            <option value="limpieza">Problema de Limpieza</option>
+                            <option value="seguridad">Problema de Seguridad</option>
+                            <option value="otro">Otro</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label" for="urgencia">Nivel de Urgencia</label>
+                        <select class="form-select" id="urgencia" required>
+                            <option value="">Seleccione urgencia</option>
+                            <option value="baja">Baja</option>
+                            <option value="media">Media</option>
+                            <option value="alta">Alta</option>
+                            <option value="critica">Crítica</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label" for="descripcion-incidencia">Descripción Detallada</label>
+                        <textarea class="form-control" id="descripcion-incidencia" rows="4" placeholder="Describa el problema en detalle..." required></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Adjuntar Evidencia (Opcional)</label>
+                        <input type="file" class="form-control" id="evidencia-incidencia" accept="image/*,.pdf">
+                    </div>
+                    
+                    <div style="text-align: right;">
+                        <button type="button" class="btn btn-outline" id="btn-cancelar-incidencia">Cancelar</button>
+                        <button type="submit" class="btn">Enviar Incidencia</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        
+        <div class="tab-content" id="solicitudes">
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">Solicitudes de Servicios</h2>
+                    <div class="card-actions">
+                        <button class="btn" id="btn-nueva-solicitud">Nueva Solicitud</button>
+                    </div>
+                </div>
+                
+                <div class="request-item">
+                    <div class="request-header">
+                        <div class="request-title">Cambio de horario de comedor</div>
+                        <span class="status-badge status-approved">Aprobado</span>
+                    </div>
+                    <div class="request-date"><i class="far fa-calendar"></i> Solicitado: 08/11/2025 - Respuesta: 10/11/2025</div>
+                    <div class="request-description">
+                        <p>Solicito cambiar mi horario de comedor del turno tarde (1:00 PM) al turno medio día (12:00 PM) por conflictos con mi horario de clases.</p>
+                    </div>
+                    <div class="request-actions">
+                        <button class="btn btn-outline">Ver Detalles</button>
+                    </div>
+                </div>
+                
+                <div class="request-item">
+                    <div class="request-header">
+                        <div class="request-title">Autorización para visita familiar</div>
+                        <span class="status-badge status-pending">En Revisión</span>
+                    </div>
+                    <div class="request-date"><i class="far fa-calendar"></i> Solicitado: 14/11/2025</div>
+                    <div class="request-description">
+                        <p>Solicito autorización para recibir la visita de mis padres los días 20 y 21 de noviembre, en horario de 2:00 PM a 6:00 PM.</p>
+                    </div>
+                    <div class="request-actions">
+                        <button class="btn btn-outline">Ver Detalles</button>
+                    </div>
+                </div>
+                
+                <div class="request-item">
+                    <div class="request-header">
+                        <div class="request-title">Uso de sala de estudios en horario extendido</div>
+                        <span class="status-badge status-rejected">Rechazado</span>
+                    </div>
+                    <div class="request-date"><i class="far fa-calendar"></i> Solicitado: 05/11/2025 - Respuesta: 07/11/2025</div>
+                    <div class="request-description">
+                        <p>Solicito autorización para usar la sala de estudios hasta las 11:00 PM durante la semana de exámenes finales (del 10 al 17 de diciembre).</p>
+                    </div>
+                    <div class="request-actions">
+                        <button class="btn btn-outline">Ver Detalles</button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="card" id="form-solicitud" style="display: none;">
+                <div class="card-header">
+                    <h2 class="card-title">Nueva Solicitud</h2>
+                </div>
+                
+                <form id="solicitud-form">
+                    <div class="form-group">
+                        <label class="form-label" for="tipo-solicitud">Tipo de Solicitud</label>
+                        <select class="form-select" id="tipo-solicitud" required>
+                            <option value="">Seleccione un tipo</option>
+                            <option value="horario-comedor">Cambio de Horario de Comedor</option>
+                            <option value="visita-familiar">Autorización de Visita Familiar</option>
+                            <option value="uso-espacios">Uso de Espacios Comunes</option>
+                            <option value="permiso-especial">Permiso Especial</option>
+                            <option value="otro">Otro</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label" for="fecha-solicitud">Fecha Solicitada</label>
+                        <input type="date" class="form-control" id="fecha-solicitud" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label" for="descripcion-solicitud">Descripción de la Solicitud</label>
+                        <textarea class="form-control" id="descripcion-solicitud" rows="4" placeholder="Describa su solicitud en detalle..." required></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label" for="justificacion-solicitud">Justificación</label>
+                        <textarea class="form-control" id="justificacion-solicitud" rows="3" placeholder="Explique los motivos de su solicitud..." required></textarea>
+                    </div>
+                    
+                    <div style="text-align: right;">
+                        <button type="button" class="btn btn-outline" id="btn-cancelar-solicitud">Cancelar</button>
+                        <button type="submit" class="btn">Enviar Solicitud</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        
+        <div class="tab-content" id="pagos">
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">Estado de Pagos</h2>
+                </div>
+                
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Mes</th>
+                            <th>Fecha Vencimiento</th>
+                            <th>Monto</th>
+                            <th>Estado</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Noviembre 2025</td>
+                            <td>25/10/2025</td>
+                            <td>S/ 350.00</td>
+                            <td><span class="status-badge status-complete">Pagado</span></td>
+                            <td><button class="btn btn-outline">Descargar Recibo</button></td>
+                        </tr>
+                        <tr>
+                            <td>Diciembre 2025</td>
+                            <td>25/11/2025</td>
+                            <td>S/ 350.00</td>
+                            <td><span class="status-badge status-pending">Pendiente</span></td>
+                            <td><button class="btn">Realizar Pago</button></td>
+                        </tr>
+                        <tr>
+                            <td>Enero 2026</td>
+                            <td>25/12/2025</td>
+                            <td>S/ 350.00</td>
+                            <td><span class="status-badge status-pending">Pendiente</span></td>
+                            <td><button class="btn">Realizar Pago</button></td>
+                        </tr>
+                    </tbody>
+                </table>
+                
+                <div class="notification info">
+                    <i class="fas fa-info-circle"></i>
+                    <div>
+                        <strong>Información de Pagos</strong>
+                        <p>Los pagos deben realizarse antes de la fecha de vencimiento para evitar recargos. Puede realizar pagos en la oficina administrativa o mediante transferencia bancaria.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="tab-content" id="calendario">
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">Calendario de Actividades</h2>
+                    <div class="card-actions">
+                        <button class="btn btn-outline">Mes Anterior</button>
+                        <button class="btn">Mes Siguiente</button>
+                    </div>
+                </div>
+                
+                <h3 style="text-align: center; margin-bottom: 1rem;">Noviembre 2025</h3>
+                
+                <div class="calendar">
+                    <div class="calendar-header">Dom</div>
+                    <div class="calendar-header">Lun</div>
+                    <div class="calendar-header">Mar</div>
+                    <div class="calendar-header">Mié</div>
+                    <div class="calendar-header">Jue</div>
+                    <div class="calendar-header">Vie</div>
+                    <div class="calendar-header">Sáb</div>
+                    
+                    <!-- Días del mes -->
+                    <div class="calendar-day">27</div>
+                    <div class="calendar-day">28</div>
+                    <div class="calendar-day">29</div>
+                    <div class="calendar-day">30</div>
+                    <div class="calendar-day">31</div>
+                    <div class="calendar-day">1</div>
+                    <div class="calendar-day">2</div>
+                    <div class="calendar-day">3</div>
+                    <div class="calendar-day">4</div>
+                    <div class="calendar-day">5</div>
+                    <div class="calendar-day">6</div>
+                    <div class="calendar-day">7</div>
+                    <div class="calendar-day">8</div>
+                    <div class="calendar-day
